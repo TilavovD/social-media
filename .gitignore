@@ -267,3 +267,14 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 local_settings.py
+
+.templates
+staticfiles/
+common/staticfiles/
+core/local_settings.py
+core/templates/index.html
+*.suo
+*.pyproj
+*.user
+*.sln
+.vscode/settings.json
