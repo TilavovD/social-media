@@ -3,20 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from helpers.models import BaseModel
 
 from django.db import models
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-
-# from django.utils import timezone
-genders = (
-    ("M", "male"),
-    ("F", "female"),
-)
-
-
-class Language(BaseModel):
-    name = models.CharField(max_length=128)
-    acronym = models.CharField(max_length=128)
-
+from post.models import Post
 
 class User(AbstractUser):
     INVALID_CODE = "######"
@@ -30,32 +17,13 @@ class User(AbstractUser):
         },
         null=True
     )
-    gender = models.CharField(choices=genders, max_length=128)
-    location = models.CharField(max_length=128)
-    born_year = models.DateTimeField("born year", null=True)
-    phone_number = models.PositiveIntegerField("phone_number", null=True)
-    bio = models.TextField()
-    website = models.CharField(max_length=128)
     avatar = models.ImageField(upload_to="avatar")
-    cover_photo = models.ImageField(upload_to="cover")
-
     followers = models.ManyToManyField('self', blank=True, null=True)
     followings = models.ManyToManyField('self', blank=True, null=True)
-    blocked_users = models.ManyToManyField('self', blank=True, null=True)
-
-    twitter_link = models.CharField(max_length=128, blank=True, default="")
-    instagram_link = models.CharField(max_length=128, blank=True, default="")
-    facebook_link = models.CharField(max_length=128, blank=True, default="")
-    linkedin_link = models.CharField(max_length=128, blank=True, default="")
-
+    
     followers_count = models.PositiveIntegerField("followers count", default=0)
     followings_count = models.PositiveIntegerField("followings count", default=0)
-    blocked_users_count = models.PositiveIntegerField("blocked users count", default=0)
-
-    created_at = models.DateTimeField("date created", auto_now_add=True, null=True)
-    updated_at = models.DateTimeField("date updated", auto_now=True)
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, null=True, blank=True)
-
+    
     # SETTINGS
     USERNAME_FIELD = "email"
     first_name = None
@@ -84,3 +52,11 @@ class User(AbstractUser):
         followed_user.followers_count -= 1
 
 
+class Comment(BaseModel):
+    text = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+
+class SubscribeForm(models.Model):
+    email = models.EmailField()
+    
