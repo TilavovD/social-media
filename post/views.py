@@ -20,7 +20,7 @@ class ListForYouPosts(ListAPIView):
 
 class Comment(CreateAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = PostSerializer
+    serializer_class = CommentSerializer
 
 class PostDetailView(RetrieveAPIView):
     queryset = Post.objects.all()
@@ -28,3 +28,5 @@ class PostDetailView(RetrieveAPIView):
     
     def get_queryset(self, **kwargs):
         return self.queryset.filter(id=self.request.kwargs['id'])
+
+
