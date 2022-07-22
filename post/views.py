@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .serializer import PostSerializer, CommentSerializer
-from rest_framework.views import ListAPIView, CreateAPIView
+from rest_framework.views import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from .models import Post, Comment
 
@@ -21,4 +21,10 @@ class ListForYouPosts(ListAPIView):
 class Comment(CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
+
+class PostDetailView(RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
     
+    def get_queryset(self, **kwargs):
+        return self.queryset.filter(id=self.request.kwargs['id'])
