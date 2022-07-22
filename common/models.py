@@ -3,8 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from helpers.models import BaseModel
 
 from django.db import models
-from post.models import Post
-
 class User(AbstractUser):
     INVALID_CODE = "######"
 
@@ -52,11 +50,5 @@ class User(AbstractUser):
         followed_user.followers_count -= 1
 
 
-class Comment(BaseModel):
-    text = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-
 class SubscribeForm(models.Model):
     email = models.EmailField()
-    

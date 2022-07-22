@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     "rest_framework.authtoken",
 
-    'message'
+    
 ]
 
 MIDDLEWARE = [
@@ -149,7 +149,3 @@ REST_FRAMEWORK = {
 }
 
 
-try:
-    from .local_settings import *  # noqa
-except ImportError:
-    pass # noqa

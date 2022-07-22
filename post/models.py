@@ -18,6 +18,13 @@ class Post(BaseModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
 
     views_count = models.PositiveIntegerField(default=0)
-    tags = models.ManyToManyField(Tag, on_delete=models.SET_NULL, related_name="posts")
+    tags = models.ManyToManyField(Tag, on_delete=models.DO_NOTHING, related_name="posts")
 
     reading_minutes = models.PositiveIntegerField(default=0)
+    is_for_you = models.BooleanField(default=False)
+    is_popular =  models.BooleanField(default=False)
+
+class Comment(BaseModel):
+    text = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
